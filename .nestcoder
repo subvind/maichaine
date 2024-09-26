@@ -278,13 +278,135 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RobotController } from './robot/robot.controller';
 import { RobotService } from './robot/robot.service';
+import { ChatController } from './chat/chat.controller';
+import { ChatService } from './chat/chat.service';
 
 @Module({
   imports: [],
-  controllers: [AppController, RobotController],
-  providers: [AppService, RobotService],
+  controllers: [AppController, RobotController, ChatController],
+  providers: [AppService, RobotService, ChatService],
 })
 export class AppModule {}
+</FILE>
+<FILE path="/home/travis/Projects/maichaine/src/chat/chat.service.ts">
+import { Injectable } from '@nestjs/common';
+import { Configuration, OpenAIApi } from 'openai';
+
+@Injectable()
+export class ChatService {
+  private openai: OpenAIApi;
+
+  constructor() {
+    const configuration = new Configuration({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    this.openai = new OpenAIApi(configuration);
+  }
+
+  async getAiResponse(message: string): Promise<string> {
+    try {
+      const completion = await this.openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: message }],
+      });
+      return completion.data.choices[0].message.content || 'No response generated.';
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      return 'Sorry, I encountered an error while processing your request.';
+    }
+  }
+}
+</FILE>
+<FILE path="/home/travis/Projects/maichaine/src/chat/chat.controller.ts">
+import { Controller, Get, Post, Body, Res, Render } from '@nestjs/common';
+import { Response } from 'express';
+import { ChatService } from './chat.service';
+
+@Controller('chat')
+export class ChatController {
+  constructor(private readonly chatService: ChatService) {}
+
+  @Get()
+  @Render('chat')
+  root() {
+    return { messages: [] };
+  }
+
+  @Post('send')
+  async sendMessage(@Body('message') message: string, @Res() res: Response) {
+    const aiResponse = await this.chatService.getAiResponse(message);
+    res.setHeader('Content-Type', 'text/html');
+    res.send(`
+      <div class="message user-message">${message}</div>
+      <div class="message ai-message">${aiResponse}</div>
+    `);
+  }
+}
+</FILE>
+<FILE path="/home/travis/Projects/maichaine/src/robot/robot.service.ts">
+import { Injectable } from '@nestjs/common';
+import { mouse, straightTo, keyboard, Point } from '@nut-tree-fork/nut-js';
+
+@Injectable()
+export class RobotService {
+  async moveMouse(x: number, y: number): Promise<void> {
+    await mouse.move(
+      straightTo(
+        new Point(x, y)
+      )
+    );
+  }
+
+  async getMousePos(): Promise<{ x: number; y: number }> {
+    const position = await mouse.getPosition();
+    return { x: position.x, y: position.y };
+  }
+
+  async typeString(text: string): Promise<void> {
+    await keyboard.type(text);
+  }
+
+  // Add more NutJS functions as needed
+}
+</FILE>
+<FILE path="/home/travis/Projects/maichaine/src/robot/robot.controller.ts">
+import { Controller, Get, Post, Body } from '@nestjs/common';
+import { RobotService } from './robot.service';
+
+@Controller('robot')
+export class RobotController {
+  constructor(private readonly robotService: RobotService) {}
+
+  @Post('move-mouse')
+  async moveMouse(@Body() body: { x: number; y: number }): Promise<string> {
+    await this.robotService.moveMouse(body.x, body.y);
+    return 'Mouse moved';
+  }
+
+  @Get('mouse-position')
+  getMousePosition(): Promise<{ x: number; y: number }> {
+    return this.robotService.getMousePos();
+  }
+
+  @Post('type')
+  async typeString(@Body('text') text: string): Promise<string> {
+    await this.robotService.typeString(text);
+    return 'Text typed';
+  }
+
+  // Add more endpoints as needed
+}
+</FILE>
+<FILE path="/home/travis/Projects/maichaine/src/app.service.ts">
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class AppService {
+  getHello(): string {
+    return 'Hello World!';
+  }
+}
+
 </FILE>
 <FILE path="/home/travis/Projects/maichaine/src/app.controller.ts">
 import { Controller, Get } from '@nestjs/common';
@@ -301,291 +423,59 @@ export class AppController {
 }
 
 </FILE>
-<FILE path="/home/travis/Projects/maichaine/src/app.service.ts">
-import { Injectable } from '@nestjs/common';
-
-@Injectable()
-export class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
-}
-
+<FILE path="/home/travis/Projects/maichaine/views/chat.ejs">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Interface</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #chat-container { border: 1px solid #ccc; height: 400px; overflow-y: auto; padding: 10px; margin-bottom: 10px; }
+        .message { margin-bottom: 10px; padding: 5px; border-radius: 5px; }
+        .user-message { background-color: #e6f3ff; text-align: right; }
+        .ai-message { background-color: #f0f0f0; }
+        #message-input { width: 80%; padding: 5px; }
+        #send-button { width: 18%; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>AI Chat Interface</h1>
+    <div id="chat-container">
+        <% messages.forEach(function(message) { %>
+            <div class="message <%= message.type %>-message"><%= message.content %></div>
+        <% }); %>
+    </div>
+    <form hx-post="/chat/send" hx-target="#chat-container" hx-swap="beforeend">
+        <input type="text" id="message-input" name="message" placeholder="Type your message..." required>
+        <button type="submit" id="send-button">Send</button>
+    </form>
+</body>
+</html>
 </FILE>
-<FILE path="/home/travis/Projects/maichaine/src/robot/robot.controller.ts">
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
-import { RobotService } from './robot.service';
-
-@Controller('robot')
-export class RobotController {
-  constructor(private readonly robotService: RobotService) {}
-
-  @Post('move-mouse')
-  moveMouse(@Body() body: { x: number; y: number }): string {
-    this.robotService.moveMouse(body.x, body.y);
-    return 'Mouse moved';
-  }
-
-  @Get('mouse-position')
-  getMousePosition(): { x: number; y: number } {
-    return this.robotService.getMousePos();
-  }
-
-  @Post('type')
-  typeString(@Body('text') text: string): string {
-    this.robotService.typeString(text);
-    return 'Text typed';
-  }
-
-  // Add more endpoints as needed
-}
-</FILE>
-<FILE path="/home/travis/Projects/maichaine/src/robot/robot.service.ts">
-import { Injectable } from '@nestjs/common';
-import * as robot from 'robotjs';
-
-@Injectable()
-export class RobotService {
-  moveMouse(x: number, y: number): void {
-    robot.moveMouse(x, y);
-  }
-
-  getMousePos(): { x: number; y: number } {
-    return robot.getMousePos();
-  }
-
-  typeString(text: string): void {
-    robot.typeString(text);
-  }
-
-  // Add more RobotJS functions as needed
-}
-</FILE>
-<FILE path="/home/travis/Projects/maichaine/start:dev.stdout.txt">
-[2J[3J[H[[90m3:59:51 PM[0m] Starting compilation in watch mode...
-
-[[90m3:59:52 PM[0m] Found 0 errors. Watching for file changes.
-
-[32m[Nest] 272195  - [39m09/25/2024, 3:59:52 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
-[32m[Nest] 272195  - [39m09/25/2024, 3:59:52 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +6ms[39m
-[32m[Nest] 272195  - [39m09/25/2024, 3:59:52 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +3ms[39m
-[32m[Nest] 272195  - [39m09/25/2024, 3:59:52 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 272195  - [39m09/25/2024, 3:59:52 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
-[31m[Nest] 272195  - [39m09/25/2024, 3:59:52 PM [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3000[39m[38;5;3m +2ms[39m
-node:net:1904
-    const ex = new UVExceptionWithHostPort(err, 'listen', address, port);
-               ^
-
-Error: listen EADDRINUSE: address already in use :::3000
-    at Server.setupListenHandle [as _listen2] (node:net:1904:16)
-    at listenInCluster (node:net:1961:12)
-    at Server.listen (node:net:2063:7)
-    at ExpressAdapter.listen (/home/travis/Projects/maichaine/node_modules/@nestjs/platform-express/adapters/express-adapter.js:95:32)
-    at /home/travis/Projects/maichaine/node_modules/@nestjs/core/nest-application.js:180:30
-    at new Promise (<anonymous>)
-    at NestApplication.listen (/home/travis/Projects/maichaine/node_modules/@nestjs/core/nest-application.js:170:16)
-    at async bootstrap (/home/travis/Projects/maichaine/src/main.ts:6:3) {
-  code: 'EADDRINUSE',
-  errno: -98,
-  syscall: 'listen',
-  address: '::',
-  port: 3000
-}
-
-Node.js v20.17.0
-[2J[3J[H[[90m4:00:07 PM[0m] File change detected. Starting incremental compilation...
-
-[[90m4:00:07 PM[0m] Found 0 errors. Watching for file changes.
-
-[32m[Nest] 272501  - [39m09/25/2024, 4:00:07 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
-[32m[Nest] 272501  - [39m09/25/2024, 4:00:07 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +5ms[39m
-[32m[Nest] 272501  - [39m09/25/2024, 4:00:07 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +3ms[39m
-[32m[Nest] 272501  - [39m09/25/2024, 4:00:07 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 272501  - [39m09/25/2024, 4:00:07 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
-[2J[3J[H[[90m4:06:55 PM[0m] File change detected. Starting incremental compilation...
-
-[96msrc/robot/robot.service.ts[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module 'robotjs' or its corresponding type declarations.
-
-[7m2[0m import * as robot from 'robotjs';
-[7m [0m [91m                       ~~~~~~~~~[0m
-
-[[90m4:06:55 PM[0m] Found 1 error. Watching for file changes.
-
-[2J[3J[H[[90m4:06:56 PM[0m] File change detected. Starting incremental compilation...
-
-[96msrc/robot/robot.service.ts[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module 'robotjs' or its corresponding type declarations.
-
-[7m2[0m import * as robot from 'robotjs';
-[7m [0m [91m                       ~~~~~~~~~[0m
-
-[[90m4:06:56 PM[0m] Found 1 error. Watching for file changes.
-
-[2J[3J[H[[90m4:07:17 PM[0m] File change detected. Starting incremental compilation...
-
-[[90m4:07:17 PM[0m] Found 0 errors. Watching for file changes.
-
-node:internal/modules/cjs/loader:1228
-  throw err;
-  ^
-
-Error: Cannot find module './build/Release/robotjs.node'
-Require stack:
-- /home/travis/Projects/maichaine/node_modules/robotjs/index.js
-- /home/travis/Projects/maichaine/dist/robot/robot.service.js
-- /home/travis/Projects/maichaine/dist/robot/robot.controller.js
-- /home/travis/Projects/maichaine/dist/app.module.js
-- /home/travis/Projects/maichaine/dist/main.js
-    at Module._resolveFilename (node:internal/modules/cjs/loader:1225:15)
-    at Module._load (node:internal/modules/cjs/loader:1051:27)
-    at Module.require (node:internal/modules/cjs/loader:1311:19)
-    at require (node:internal/modules/helpers:179:18)
-    at Object.<anonymous> (/home/travis/Projects/maichaine/node_modules/robotjs/index.js:1:15)
-    at Module._compile (node:internal/modules/cjs/loader:1469:14)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
-    at Module.load (node:internal/modules/cjs/loader:1288:32)
-    at Module._load (node:internal/modules/cjs/loader:1104:12)
-    at Module.require (node:internal/modules/cjs/loader:1311:19) {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: [
-    '/home/travis/Projects/maichaine/node_modules/robotjs/index.js',
-    '/home/travis/Projects/maichaine/dist/robot/robot.service.js',
-    '/home/travis/Projects/maichaine/dist/robot/robot.controller.js',
-    '/home/travis/Projects/maichaine/dist/app.module.js',
-    '/home/travis/Projects/maichaine/dist/main.js'
-  ]
-}
-
-Node.js v20.17.0
-[2J[3J[H[[90m4:07:18 PM[0m] File change detected. Starting incremental compilation...
-
-[[90m4:07:18 PM[0m] Found 0 errors. Watching for file changes.
-
-node:internal/modules/cjs/loader:1228
-  throw err;
-  ^
-
-Error: Cannot find module './build/Release/robotjs.node'
-Require stack:
-- /home/travis/Projects/maichaine/node_modules/robotjs/index.js
-- /home/travis/Projects/maichaine/dist/robot/robot.service.js
-- /home/travis/Projects/maichaine/dist/robot/robot.controller.js
-- /home/travis/Projects/maichaine/dist/app.module.js
-- /home/travis/Projects/maichaine/dist/main.js
-    at Module._resolveFilename (node:internal/modules/cjs/loader:1225:15)
-    at Module._load (node:internal/modules/cjs/loader:1051:27)
-    at Module.require (node:internal/modules/cjs/loader:1311:19)
-    at require (node:internal/modules/helpers:179:18)
-    at Object.<anonymous> (/home/travis/Projects/maichaine/node_modules/robotjs/index.js:1:15)
-    at Module._compile (node:internal/modules/cjs/loader:1469:14)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
-    at Module.load (node:internal/modules/cjs/loader:1288:32)
-    at Module._load (node:internal/modules/cjs/loader:1104:12)
-    at Module.require (node:internal/modules/cjs/loader:1311:19) {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: [
-    '/home/travis/Projects/maichaine/node_modules/robotjs/index.js',
-    '/home/travis/Projects/maichaine/dist/robot/robot.service.js',
-    '/home/travis/Projects/maichaine/dist/robot/robot.controller.js',
-    '/home/travis/Projects/maichaine/dist/app.module.js',
-    '/home/travis/Projects/maichaine/dist/main.js'
-  ]
-}
-
-Node.js v20.17.0
-[2J[3J[H[[90m4:07:19 PM[0m] File change detected. Starting incremental compilation...
-
-[96msrc/robot/robot.service.ts[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module 'robotjs' or its corresponding type declarations.
-
-[7m2[0m import * as robot from 'robotjs';
-[7m [0m [91m                       ~~~~~~~~~[0m
-
-[[90m4:07:19 PM[0m] Found 1 error. Watching for file changes.
-
-[2J[3J[H[[90m4:07:20 PM[0m] File change detected. Starting incremental compilation...
-
-[96msrc/robot/robot.service.ts[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module 'robotjs' or its corresponding type declarations.
-
-[7m2[0m import * as robot from 'robotjs';
-[7m [0m [91m                       ~~~~~~~~~[0m
-
-[[90m4:07:20 PM[0m] Found 1 error. Watching for file changes.
 
 
-</FILE>
-<FILE path="/home/travis/Projects/maichaine/test/app.e2e-spec.ts">
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
-
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
-});
-
-</FILE>
-<FILE path="/home/travis/Projects/maichaine/dist/main.d.ts">
-export {};
-
-</FILE>
-<FILE path="/home/travis/Projects/maichaine/dist/app.module.d.ts">
-export declare class AppModule {
-}
-
-</FILE>
-<FILE path="/home/travis/Projects/maichaine/dist/robot/robot.controller.d.ts">
-import { RobotService } from './robot.service';
-export declare class RobotController {
-    private readonly robotService;
-    constructor(robotService: RobotService);
-    moveMouse(body: {
-        x: number;
-        y: number;
-    }): string;
-    getMousePosition(): {
-        x: number;
-        y: number;
-    };
-    typeString(text: string): string;
-}
-
-</FILE>
-<FILE path="/home/travis/Projects/maichaine/dist/robot/robot.service.d.ts">
-export declare class RobotService {
-    moveMouse(x: number, y: number): void;
-    getMousePos(): {
-        x: number;
-        y: number;
-    };
-    typeString(text: string): void;
-}
-
-</FILE>
 <FILE path="src/main.ts" TARGET>
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('ejs');
+
   await app.listen(4141);
 }
 bootstrap();
 </FILE>
 <REQUEST>
-i want to control my machine over api using nutjs
+i want to use openai / ChatGPT instead... 'Configuration, OpenAIApi' does not exist
 </REQUEST>
