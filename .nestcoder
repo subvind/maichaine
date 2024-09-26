@@ -280,66 +280,81 @@ import { RobotController } from './robot/robot.controller';
 import { RobotService } from './robot/robot.service';
 import { ChatController } from './chat/chat.controller';
 import { ChatService } from './chat/chat.service';
+import { ChatGateway } from './chat/chat.gateway';
 
 @Module({
   imports: [],
   controllers: [AppController, RobotController, ChatController],
-  providers: [AppService, RobotService, ChatService],
+  providers: [AppService, RobotService, ChatService, ChatGateway],
 })
 export class AppModule {}
 </FILE>
-<FILE path="/home/travis/Projects/maichaine/src/chat/chat.service.ts">
-import { Injectable } from '@nestjs/common';
-import { Configuration, OpenAIApi } from 'openai';
-
-@Injectable()
-export class ChatService {
-  private openai: OpenAIApi;
-
-  constructor() {
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-    this.openai = new OpenAIApi(configuration);
-  }
-
-  async getAiResponse(message: string): Promise<string> {
-    try {
-      const completion = await this.openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: message }],
-      });
-      return completion.data.choices[0].message.content || 'No response generated.';
-    } catch (error) {
-      console.error('Error getting AI response:', error);
-      return 'Sorry, I encountered an error while processing your request.';
-    }
-  }
-}
-</FILE>
 <FILE path="/home/travis/Projects/maichaine/src/chat/chat.controller.ts">
-import { Controller, Get, Post, Body, Res, Render } from '@nestjs/common';
-import { Response } from 'express';
-import { ChatService } from './chat.service';
+import { Controller, Get, Render } from '@nestjs/common';
 
 @Controller('chat')
 export class ChatController {
-  constructor(private readonly chatService: ChatService) {}
-
   @Get()
   @Render('chat')
   root() {
     return { messages: [] };
   }
+}
+</FILE>
+<FILE path="/home/travis/Projects/maichaine/src/chat/chat.gateway.ts">
+import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import { Server } from 'ws';
+import { ChatService } from './chat.service';
 
-  @Post('send')
-  async sendMessage(@Body('message') message: string, @Res() res: Response) {
+@WebSocketGateway(8080)
+export class ChatGateway {
+  @WebSocketServer()
+  server: Server;
+
+  constructor(private readonly chatService: ChatService) {}
+
+  @SubscribeMessage('sendMessage')
+  async handleMessage(@MessageBody() message: string): Promise<void> {
+    // Send user message to all clients
+    this.server.clients.forEach((client) => {
+      client.send(JSON.stringify({ type: 'user', content: message }));
+    });
+
+    // Get AI response
     const aiResponse = await this.chatService.getAiResponse(message);
-    res.setHeader('Content-Type', 'text/html');
-    res.send(`
-      <div class="message user-message">${message}</div>
-      <div class="message ai-message">${aiResponse}</div>
-    `);
+
+    // Send AI response to all clients
+    this.server.clients.forEach((client) => {
+      client.send(JSON.stringify({ type: 'ai', content: aiResponse }));
+    });
+  }
+}
+</FILE>
+<FILE path="/home/travis/Projects/maichaine/src/chat/chat.service.ts">
+import { Injectable } from '@nestjs/common';
+import OpenAI from 'openai';
+
+@Injectable()
+export class ChatService {
+  private openai: OpenAI;
+
+  constructor() {
+    this.openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+
+  async getAiResponse(message: string): Promise<string> {
+    try {
+      const completion = await this.openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: message }],
+      });
+      return completion.choices[0].message.content || 'No response generated.';
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      return 'Sorry, I encountered an error while processing your request.';
+    }
   }
 }
 </FILE>
@@ -369,6 +384,92 @@ export class RobotService {
   // Add more NutJS functions as needed
 }
 </FILE>
+<FILE path="/home/travis/Projects/maichaine/views/chat.ejs">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Interface</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #chat-container { border: 1px solid #ccc; height: 400px; overflow-y: auto; padding: 10px; margin-bottom: 10px; }
+        .message { margin-bottom: 10px; padding: 5px; border-radius: 5px; }
+        .user-message { background-color: #e6f3ff; text-align: right; }
+        .ai-message { background-color: #f0f0f0; }
+        #message-input { width: 80%; padding: 5px; }
+        #send-button { width: 18%; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>AI Chat Interface</h1>
+    <div id="chat-container">
+        <% messages.forEach(function(message) { %>
+            <div class="message <%= message.type %>-message"><%= message.content %></div>
+        <% }); %>
+    </div>
+    <form id="chat-form">
+        <input type="text" id="message-input" placeholder="Type your message..." required>
+        <button type="submit" id="send-button">Send</button>
+    </form>
+
+    <script>
+        const socket = new WebSocket('ws://localhost:8080');
+        const chatContainer = document.getElementById('chat-container');
+        const chatForm = document.getElementById('chat-form');
+        const messageInput = document.getElementById('message-input');
+
+        socket.onmessage = function(event) {
+            const message = JSON.parse(event.data);
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', `${message.type}-message`);
+            messageElement.textContent = message.content;
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        };
+
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = messageInput.value;
+            if (message) {
+                socket.send(JSON.stringify({ event: 'sendMessage', data: message }));
+                messageInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
+</FILE>
+
+
+
+
+<FILE path="/home/travis/Projects/maichaine/src/app.controller.ts">
+import { Controller, Get } from '@nestjs/common';
+import { AppService } from './app.service';
+
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  getHello(): string {
+    return this.appService.getHello();
+  }
+}
+
+</FILE>
+<FILE path="/home/travis/Projects/maichaine/src/app.service.ts">
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class AppService {
+  getHello(): string {
+    return 'Hello World!';
+  }
+}
+
+</FILE>
 <FILE path="/home/travis/Projects/maichaine/src/robot/robot.controller.ts">
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { RobotService } from './robot.service';
@@ -397,73 +498,14 @@ export class RobotController {
   // Add more endpoints as needed
 }
 </FILE>
-<FILE path="/home/travis/Projects/maichaine/src/app.service.ts">
-import { Injectable } from '@nestjs/common';
-
-@Injectable()
-export class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
-}
-
-</FILE>
-<FILE path="/home/travis/Projects/maichaine/src/app.controller.ts">
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-
-@Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-}
-
-</FILE>
-<FILE path="/home/travis/Projects/maichaine/views/chat.ejs">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat Interface</title>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        #chat-container { border: 1px solid #ccc; height: 400px; overflow-y: auto; padding: 10px; margin-bottom: 10px; }
-        .message { margin-bottom: 10px; padding: 5px; border-radius: 5px; }
-        .user-message { background-color: #e6f3ff; text-align: right; }
-        .ai-message { background-color: #f0f0f0; }
-        #message-input { width: 80%; padding: 5px; }
-        #send-button { width: 18%; padding: 5px; }
-    </style>
-</head>
-<body>
-    <h1>AI Chat Interface</h1>
-    <div id="chat-container">
-        <% messages.forEach(function(message) { %>
-            <div class="message <%= message.type %>-message"><%= message.content %></div>
-        <% }); %>
-    </div>
-    <form hx-post="/chat/send" hx-target="#chat-container" hx-swap="beforeend">
-        <input type="text" id="message-input" name="message" placeholder="Type your message..." required>
-        <button type="submit" id="send-button">Send</button>
-    </form>
-</body>
-</html>
-</FILE>
-
-
-
-
 <FILE path="src/main.ts" TARGET>
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { WsAdapter } from '@nestjs/platform-ws';
+
+import 'dotenv/config'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -472,10 +514,12 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
 
+  app.useWebSocketAdapter(new WsAdapter(app));
+
   await app.listen(4141);
 }
 bootstrap();
 </FILE>
 <REQUEST>
-i want to use openai / ChatGPT instead... 'Configuration, OpenAIApi' does not exist
+messages should be added to the chat in chunks as it is generated; use websockets
 </REQUEST>

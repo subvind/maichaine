@@ -11,16 +11,23 @@ export class ChatService {
     });
   }
 
-  async getAiResponse(message: string): Promise<string> {
+  async *getAiResponseGenerator(message: string): AsyncGenerator<string, void, unknown> {
     try {
-      const completion = await this.openai.chat.completions.create({
+      const stream = await this.openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: message }],
+        stream: true,
       });
-      return completion.choices[0].message.content || 'No response generated.';
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || '';
+        if (content) {
+          yield content;
+        }
+      }
     } catch (error) {
       console.error('Error getting AI response:', error);
-      return 'Sorry, I encountered an error while processing your request.';
+      yield 'Sorry, I encountered an error while processing your request.';
     }
   }
 }
