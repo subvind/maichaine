@@ -1,32 +1,196 @@
-[2J[3J[H[[90m1:52:15 AM[0m] Starting compilation in watch mode...
+[2J[3J[H[[90m2:55:14 PM[0m] Starting compilation in watch mode...
 
-[[90m1:52:16 AM[0m] Found 0 errors. Watching for file changes.
+[[90m2:55:15 PM[0m] Found 0 errors. Watching for file changes.
 
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +7ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[WebSocketsController] [39m[32mChatGateway subscribed to the "sendMessage" message[39m[38;5;3m +8ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +1ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mRobotController {/robot}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/move-mouse, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/mouse-position, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/type, POST} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 1247050  - [39m09/26/2024, 1:52:16 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
-[2J[3J[H[[90m1:56:20 AM[0m] File change detected. Starting incremental compilation...
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +6ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[WebSocketsController] [39m[32mChatGateway subscribed to the "sendMessage" message[39m[38;5;3m +6ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mRobotController {/robot}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/move-mouse, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/mouse-position, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/type, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/process, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2541388  - [39m09/26/2024, 2:55:15 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+/home/travis/Projects/maichaine/src/chat/chat.service.ts:25
+    const promptsDir = path.join(process.cwd(), 'prompts');
+                            ^
 
-[[90m1:56:21 AM[0m] Found 0 errors. Watching for file changes.
 
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +7ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[WebSocketsController] [39m[32mChatGateway subscribed to the "sendMessage" message[39m[38;5;3m +7ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +1ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mRobotController {/robot}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/move-mouse, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/mouse-position, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/type, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 1251715  - [39m09/26/2024, 1:56:21 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+TypeError: Cannot read properties of undefined (reading 'join')
+    at ChatService.loadPrompts (/home/travis/Projects/maichaine/src/chat/chat.service.ts:25:29)
+    at new ChatService (/home/travis/Projects/maichaine/src/chat/chat.service.ts:21:10)
+    at Injector.instantiateClass (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:365:19)
+    at callback (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:65:45)
+    at async Injector.resolveConstructorParams (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:144:24)
+    at async Injector.loadInstance (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at async Injector.loadProvider (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at async /home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 5)
+    at async InstanceLoader.createInstancesOfProviders (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+
+Node.js v20.17.0
+[2J[3J[H[[90m2:57:31 PM[0m] File change detected. Starting incremental compilation...
+
+[[90m2:57:31 PM[0m] Found 0 errors. Watching for file changes.
+
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +7ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[WebSocketsController] [39m[32mChatGateway subscribed to the "sendMessage" message[39m[38;5;3m +6ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mRobotController {/robot}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/move-mouse, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/mouse-position, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/type, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/process, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544041  - [39m09/26/2024, 2:57:31 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+/home/travis/Projects/maichaine/src/chat/chat.service.ts:26
+    this.nestcoderPrompt = await fs.readFile(path.join(promptsDir, 'nestcoder.prompt.text'), 'utf-8');
+                                    ^
+
+
+TypeError: Cannot read properties of undefined (reading 'readFile')
+    at ChatService.loadPrompts (/home/travis/Projects/maichaine/src/chat/chat.service.ts:26:37)
+    at new ChatService (/home/travis/Projects/maichaine/src/chat/chat.service.ts:21:10)
+    at Injector.instantiateClass (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:365:19)
+    at callback (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:65:45)
+    at async Injector.resolveConstructorParams (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:144:24)
+    at async Injector.loadInstance (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at async Injector.loadProvider (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at async /home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 5)
+    at async InstanceLoader.createInstancesOfProviders (/home/travis/Projects/maichaine/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+
+Node.js v20.17.0
+[2J[3J[H[[90m2:57:57 PM[0m] File change detected. Starting incremental compilation...
+
+[[90m2:57:57 PM[0m] Found 0 errors. Watching for file changes.
+
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +8ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[WebSocketsController] [39m[32mChatGateway subscribed to the "sendMessage" message[39m[38;5;3m +7ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mRobotController {/robot}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/move-mouse, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/mouse-position, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/type, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/process, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2544501  - [39m09/26/2024, 2:57:57 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+Error getting AI response: BadRequestError: 400 This model's maximum context length is 16385 tokens. However, your messages resulted in 33730 tokens. Please reduce the length of the messages.
+    at Function.generate (/home/travis/Projects/maichaine/node_modules/openai/src/error.ts:70:14)
+    at OpenAI.makeStatusError (/home/travis/Projects/maichaine/node_modules/openai/src/core.ts:428:21)
+    at OpenAI.makeRequest (/home/travis/Projects/maichaine/node_modules/openai/src/core.ts:492:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ask (/home/travis/Projects/maichaine/src/Chat.ts:15:22)
+    at async ChatService.predictDependencies (/home/travis/Projects/maichaine/src/chat/chat.service.ts:92:17)
+    at async ChatService.prepareAiInput (/home/travis/Projects/maichaine/src/chat/chat.service.ts:46:18)
+    at async ChatService.getAiResponseGenerator (/home/travis/Projects/maichaine/src/chat/chat.service.ts:32:23)
+    at async ChatGateway.handleMessage (/home/travis/Projects/maichaine/src/chat/chat.gateway.ts:22:22)
+    at async ChatGateway.<anonymous> (/home/travis/Projects/maichaine/node_modules/@nestjs/websockets/context/ws-proxy.js:12:32) {
+  status: 400,
+  headers: {
+    'access-control-expose-headers': 'X-Request-ID',
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': '8c95d3d159438789-DFW',
+    connection: 'keep-alive',
+    'content-length': '282',
+    'content-type': 'application/json',
+    date: 'Thu, 26 Sep 2024 19:58:12 GMT',
+    'openai-organization': 'user-ggi804gublprnf3nioked5up',
+    'openai-processing-ms': '90',
+    'openai-version': '2020-10-01',
+    server: 'cloudflare',
+    'set-cookie': '__cf_bm=jYGyMtxQWXzGjRcFx.AKTw..VM4maLvacFrB23wXeH8-1727380692-1.0.1.1-B.8PkT5ZfZkZyHvckK2KiUEtltdBMmEcbFoGt.j74M3vKmukcF66h3h2ws6T9W0Xu9UFS2dCRXZyyq9azVTcAw; path=/; expires=Thu, 26-Sep-24 20:28:12 GMT; domain=.api.openai.com; HttpOnly; Secure; SameSite=None, _cfuvid=iaXZHtWYTu07me1tJGpOGgTDn.2AqAAJu2IDJa2lROg-1727380692942-0.0.1.1-604800000; path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    'x-content-type-options': 'nosniff',
+    'x-ratelimit-limit-requests': '10000',
+    'x-ratelimit-limit-tokens': '200000',
+    'x-ratelimit-remaining-requests': '9999',
+    'x-ratelimit-remaining-tokens': '166825',
+    'x-ratelimit-reset-requests': '8.64s',
+    'x-ratelimit-reset-tokens': '9.952s',
+    'x-request-id': 'req_57a560dba9df0c18c098481a6e4ac21a'
+  },
+  request_id: 'req_57a560dba9df0c18c098481a6e4ac21a',
+  error: {
+    message: "This model's maximum context length is 16385 tokens. However, your messages resulted in 33730 tokens. Please reduce the length of the messages.",
+    type: 'invalid_request_error',
+    param: 'messages',
+    code: 'context_length_exceeded'
+  },
+  code: 'context_length_exceeded',
+  param: 'messages',
+  type: 'invalid_request_error'
+}
+[2J[3J[H[[90m3:02:37 PM[0m] File change detected. Starting incremental compilation...
+
+[[90m3:02:37 PM[0m] Found 0 errors. Watching for file changes.
+
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +7ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[WebSocketsController] [39m[32mChatGateway subscribed to the "sendMessage" message[39m[38;5;3m +6ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mRobotController {/robot}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/move-mouse, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/mouse-position, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/robot/type, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/process, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 2566447  - [39m09/26/2024, 3:02:37 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+Error getting AI response: BadRequestError: 400 This model's maximum context length is 16385 tokens. However, your messages resulted in 33730 tokens. Please reduce the length of the messages.
+    at Function.generate (/home/travis/Projects/maichaine/node_modules/openai/src/error.ts:70:14)
+    at OpenAI.makeStatusError (/home/travis/Projects/maichaine/node_modules/openai/src/core.ts:428:21)
+    at OpenAI.makeRequest (/home/travis/Projects/maichaine/node_modules/openai/src/core.ts:492:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ask (/home/travis/Projects/maichaine/src/Chat.ts:15:22)
+    at async ChatService.predictDependencies (/home/travis/Projects/maichaine/src/chat/chat.service.ts:93:17)
+    at async ChatService.prepareAiInput (/home/travis/Projects/maichaine/src/chat/chat.service.ts:47:18)
+    at async ChatService.getAiResponseGenerator (/home/travis/Projects/maichaine/src/chat/chat.service.ts:32:23)
+    at async ChatGateway.handleMessage (/home/travis/Projects/maichaine/src/chat/chat.gateway.ts:22:22)
+    at async ChatGateway.<anonymous> (/home/travis/Projects/maichaine/node_modules/@nestjs/websockets/context/ws-proxy.js:12:32) {
+  status: 400,
+  headers: {
+    'access-control-expose-headers': 'X-Request-ID',
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': '8c95daacdc87478d-DFW',
+    connection: 'keep-alive',
+    'content-length': '282',
+    'content-type': 'application/json',
+    date: 'Thu, 26 Sep 2024 20:02:54 GMT',
+    'openai-organization': 'user-ggi804gublprnf3nioked5up',
+    'openai-processing-ms': '76',
+    'openai-version': '2020-10-01',
+    server: 'cloudflare',
+    'set-cookie': '__cf_bm=mTg8iDuEb3xavb48NmnO0m1eJCctyNJSEdsfWabqdTE-1727380974-1.0.1.1-xbNS6lOKcxUINu6cZx_N5HlKljFGrnpouWLF647aoSW8OzTDFF60RIPRcl0fUzs89zgSmfqJ6VJWGwxIoRRltA; path=/; expires=Thu, 26-Sep-24 20:32:54 GMT; domain=.api.openai.com; HttpOnly; Secure; SameSite=None, _cfuvid=W8jQ2sMvMs9IJPihdJP.jW5FmrH.tZYh_oWwIWZKDqA-1727380974360-0.0.1.1-604800000; path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    'x-content-type-options': 'nosniff',
+    'x-ratelimit-limit-requests': '10000',
+    'x-ratelimit-limit-tokens': '200000',
+    'x-ratelimit-remaining-requests': '9999',
+    'x-ratelimit-remaining-tokens': '166825',
+    'x-ratelimit-reset-requests': '8.64s',
+    'x-ratelimit-reset-tokens': '9.952s',
+    'x-request-id': 'req_6113d991efa78bda050777f2ed08049c'
+  },
+  request_id: 'req_6113d991efa78bda050777f2ed08049c',
+  error: {
+    message: "This model's maximum context length is 16385 tokens. However, your messages resulted in 33730 tokens. Please reduce the length of the messages.",
+    type: 'invalid_request_error',
+    param: 'messages',
+    code: 'context_length_exceeded'
+  },
+  code: 'context_length_exceeded',
+  param: 'messages',
+  type: 'invalid_request_error'
+}
